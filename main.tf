@@ -1,7 +1,11 @@
 terraform {
-  backend "s3" {
-    bucket = "your-terraform-state-bucket"       # S3 bucket to store the state
-    key    = "state/${terraform.workspace}/terraform.tfstate" # Unique path for each workspace
-    region = "us-west-2"                         # AWS region where the bucket is located
+  backend "gcs" {
+    bucket = "terraform-backend-workspace"  # The GCS bucket name
+    prefix = "terraform/state"          # Directory inside the bucket to store the state files
+
+    # workspace-specific state storage
+    # Using workspace name as the directory or object in GCS
+    workspace_key_prefix = "workspaces/${terraform.workspace}"
   }
 }
+
